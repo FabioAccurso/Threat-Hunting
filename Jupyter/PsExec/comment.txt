@@ -1,1 +1,3 @@
+Questo script è progettato per rilevare l'uso di PsExec, un'utilità che può essere sfruttata dagli aggressori per eseguire processi su sistemi remoti.
+
 
