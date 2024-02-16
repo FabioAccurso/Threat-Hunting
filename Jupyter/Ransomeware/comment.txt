@@ -12,7 +12,7 @@ Questi includono:
   la cartella di destinazione per l'output (output_folder) e 
   il nome del file CSV di output (output_filename).
 
-opo aver definito i percorsi, viene costruita una stringa di comando che rappresenta il comando da eseguire utilizzando le variabili precedentemente definite. 
+Dopo aver definito i percorsi, viene costruita una stringa di comando che rappresenta il comando da eseguire utilizzando le variabili precedentemente definite. 
 Questa stringa di comando verrà eseguita in seguito per analizzare il file MFT e generare un file CSV di output.
 
 Successivamente il comando viene eseguito utilizzando os.popen, e l'output viene letto e memorizzato nella variabile output.
@@ -34,4 +34,4 @@ Vediamo quali analisi possono esserci utili:
 Potremmo inoltre eseguire analisi su più file MFT, effettuare ricerche per modelli di nomi, confrontare date di creazione e modifica, cercare file con attributi sospetti.. insomma un mondo di possibilità!
 
 
-
+FONTE: [https://towardsdatascience.com/hunting-threats-with-pandas-mft-analysis-9f96a99ef27a]
