@@ -1,0 +1,37 @@
+Questo script Python è progettato per eseguire un'analisi del Master File Table (MFT) di un sistema Windows utilizzando uno strumento chiamato MFTExplorer. 
+
+Inizialmente vengono importate le librerie necessarie per l'esecuzione dello script, tra cui:
+  "os" per l'accesso alle funzionalità del sistema operativo, 
+  "pandas as pd" per la manipolazione dei dati attraverso i DataFrame di Pandas
+  e "check_output" dalla libreria "subprocess", che è utilizzato per eseguire comandi shell e ottenere l'output.
+
+Successivamente, vengono definiti i percorsi dei file e delle cartelle utilizzati nello script. 
+Questi includono:
+  il percorso del file MFT da analizzare (mft_path), 
+  il percorso dell'eseguibile di MFTExplorer (mftexplorer_path), 
+  la cartella di destinazione per l'output (output_folder) e 
+  il nome del file CSV di output (output_filename).
+
+opo aver definito i percorsi, viene costruita una stringa di comando che rappresenta il comando da eseguire utilizzando le variabili precedentemente definite. 
+Questa stringa di comando verrà eseguita in seguito per analizzare il file MFT e generare un file CSV di output.
+
+Successivamente il comando viene eseguito utilizzando os.popen, e l'output viene letto e memorizzato nella variabile output.
+
+Dopo aver ottenuto l'output, i dati vengono caricati da un file CSV nella variabile data utilizzando Pandas. Viene impostata un'opzione per mostrare fino a 500 colonne nel DataFrame.
+I dati vengono quindi manipolati per convertire le colonne contenenti informazioni sulle date in oggetti datetime utilizzando il formato specificato.
+
+Viene quindi infine eseguita l'analisi dei dati.
+Supponiamo che questa MFT appartenga ad un computer che ha subito un attacco Ransomeware, più precisamente Avaddon.
+Vediamo quali analisi possono esserci utili:
+  1.  Innanzitutto possiamo vedere nella MFT quali sono i giorni in cui sono state apportate più modifiche ai file.
+      Cosi facendo otteniamo prima la data di installazione del sistema operativo e poi quello che apparentemente può essere il giorno dell'attacco.
+  2.  Possiamo cercare i file più ripetuti all'interno della MFT negli ultimi 4 mesi, con l'intenzione di scoprire anomalie.
+      In questo modo troviamo proprio le note di riscatto. Questo ransomware infatti crea richieste di riscatto durante la sua esecuzione e le modifica con ogni file che crittografa. 
+      Così facendo scopriamo quando è avvenuto l'incidente.
+  3.  Possiamo interrogare i file con le estensioni più comuni utilizzate dagli aggressori nei casi di ransomware, ma solo nelle 12 ore precedenti la creazione della prima richiesta di riscatto.
+      In questo modo si cerca di identificare l'autore del reato.
+
+Potremmo inoltre eseguire analisi su più file MFT, effettuare ricerche per modelli di nomi, confrontare date di creazione e modifica, cercare file con attributi sospetti.. insomma un mondo di possibilità!
+
+
+
