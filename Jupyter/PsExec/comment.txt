@@ -1,3 +1,26 @@
 Questo script è progettato per rilevare l'uso di PsExec, un'utilità che può essere sfruttata dagli aggressori per eseguire processi su sistemi remoti.
 
+Esploriamo un incidente in cui PsExec è stato utilizzato per estrarre i segreti LSA da un host compromesso. 
+I segreti LSA sono uno speciale archivio protetto per dati importanti, utilizzato dal Local Security Authority (LSA) in Windows. 
+LSA è progettato per la gestione della politica di sicurezza locale di un sistema, l'autenticazione, l'accesso degli utenti al sistema e l'archiviazione di dati privati. I dati sensibili degli utenti e del sistema sono archiviati in segreti.
 
+Per sfruttare al meglio i dati del nostro registro eventi dobbiamo inizializzare tutti gli oggetti che saranno richiesti per manipolare e analizzare correttamente il set di dati.
+Per farlo importiamo le librerie necessarie (pandas, json, re), e memorizziamo in un dataframe denominato eventlog_df i dati di registro letti dal file json utilizzando la funzione read_json() della libreria pandas.
+
+Per avere un'idea della struttura e del contenuto dei dati del registro eventi, nonché garantire l'integrità dei dati, è importante visualizzare in anteprima i dati archiviati nel nostro dataframe. Un modo per farlo è utilizzare la funzione head che ci consente di visualizzare rapidamente le prime righe del dataframe, dandoci un'idea della struttura e del contenuto dei dati.
+Possiamo anche scorrere tutti i nomi delle colonne e stamparli come un elenco, in modo da avere un idea ancora più chiara della struttura del dataframe.
+
+Siamo pronti per iniziare la caccia.
+Ci sono diverse ricerche che possono essere effettuate per rilevare l'utilizzo di PsExec, ad esempio:
+  1- Cercare, se si ha accesso a un EDR (Endpoint Detection and Response) o sysmon, le righe di comando che contengono la stringa "psexec".
+      Infatti quando un attaccante esegue per la prima volta PsExec la riga di comando dovrebbe essere simile a: [PsExec.exe -accepteula “qualunque sia il comando”].
+  2- Cercare tracce di PsExec nel registro degli eventi. Infatti quando PsExec si installa come servizio su un host di destinazione, il nome del file del servizio viene registrato come PSEXESVC.exe . 
+    Il registro eventi di sistema di Windows annoterà la registrazione del servizio come EventID 7045 .
+  3- Cercare prove dei suoi artefatti di esecuzione, i quali possono spesso fornire indizi sui programmi e sui processi che sono stati eseguiti o installati su un sistema.
+    In particolare si può effettuare un raggruppamento di EventID (oppure di file amcache, prefetch, shimcache) cercando di indentificare modelli di comportamento che potrebbero essere indicativi di attività dannose. 
+    In questo caso, ci concentreremo sugli eventi che si verificano meno di 10 volte, poiché potrebbero essere meno comuni e meritevoli di ulteriori indagini.
+    Vediamo nel dettaglio quali sono i passi per effettuare questo tipo di ricerca:
+      a- Si può partire dalla creazione di una query che impila tutti gli EventID e li ordina in base all'occorrenza da quello meno frequente a quello più frequente.
+      b- Successivamente è possibile scrivere una query per identificare tutti gli EventID che si sono verificati meno di 10 volte e archiviare tali eventi in un nuovo dataframe chiamato stacked_df, stampando l'EventID e il messaggio per ogni riga.
+      c- Infine per semplificare la revisione dei dati può essere utile inserire gli eventi del nuovo dataframe in una timeline.
+    A questo punto l'analista impiega il suo tempo per ripercorrere tutti gli eventi facendo delle ipotesi e spostando le prove rilevanti su una timeline principale.
