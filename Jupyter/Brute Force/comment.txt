@@ -1,1 +1,13 @@
+In questo script utilizzeremo ElasticSearch per automatizzare l'analisi dei registri eventi di Windows al fine di individuare e identificare attacchi Brute Force. 
+ElasticSearch è un potente strumento di analisi e ricerca che ci consente di eseguire questa procedura in modo efficiente e automatizzato, eliminando la necessità di effettuare manualmente l'analisi dei registri eventi.
 
+Nella fase iniziale vengono importate le librerie necessarie per la comunicazione con Elasticsearch, la gestione delle operazioni di sistema, la manipolazione dei dati JSON e l'invio di notifiche a Slack.
+
+Viene successivamente definita la funzione 'search_brute_force()' che esegue la scansione dei log.
+All'interno di questa funzione, viene inizializzato un oggetto SlackClient con una chiave API Slack, e viene tentata la connessione al server Elasticsearch locale sulla porta 9200. Se la connessione ha successo, viene stampato un messaggio di conferma; altrimenti, viene stampato un messaggio di errore e il programma termina.
+
+La funzione procede quindi definendo un corpo di query Elasticsearch che seleziona tutto. Potremmo modificare la query per selezionare solo ciò di cui abbiamo bisogno.
+
+Durante la scansione dei risultati, il codice controlla se ciascun evento corrisponde a un tentativo di accesso fallito (identificato dall'event_id 4625). Se lo fa, incrementa un contatore per l'utente associato al tentativo di accesso fallito. Se il numero di tentativi di accesso supera 20 per un singolo utente, viene identificato come un possibile attacco di forza bruta e viene inviata una notifica a un canale Slack specificato
+
+In sintesi, questo script è utile per monitorare i log alla ricerca di comportamenti sospetti, come tentativi di accesso falliti ripetuti, e per notificare immediatamente l'evento a un canale Slack per l'ulteriore gestione da parte degli amministratori di sistema.
