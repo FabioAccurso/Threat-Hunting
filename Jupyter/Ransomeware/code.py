@@ -43,3 +43,4 @@ first_note = readme1.sort_values(by="LastModified0x10", ascending=True).iloc[0][
 range_exe = first_note + pd.offsets.Hour(-12)
 data_filtered = data[(data['Created0x10'] > "2021-05-22") & (data['Created0x10'] < "2021-05-25")]
 files = data_filtered[data_filtered["FileName"].str.contains("\.exe|\.ps1|\.msi|\.vba", regex=True)]
+files.head()
