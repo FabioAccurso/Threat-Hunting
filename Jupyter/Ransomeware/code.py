@@ -27,6 +27,10 @@ s = dates.groupby(level=0).size()
 s.sort_values(ascending=False).head(10)
 
 #Analisi 2
+data_filtered = data[(data['LastModified0x10'] > "2021-01-01") & (data['LastModified0x10'] < "2021-05-30")]
+names = data_filtered["FileName"].value_counts()
+names.nlargest()
+names_plot = names.to_frame().head(5).sort_values(by="FileName", ascending=False)
 fig = px.bar(names_plot, x="FileName", "title=Files with more entries")
 Fig.show()
 
