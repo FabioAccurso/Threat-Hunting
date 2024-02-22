@@ -32,7 +32,7 @@ names = data_filtered["FileName"].value_counts()
 names.nlargest()
 names_plot = names.to_frame().head(5).sort_values(by="FileName", ascending=False)
 fig = px.bar(names_plot, x="FileName", "title=Files with more entries")
-Fig.show()
+fig.show()
 
 #Visualizzazione piu nel dettaglio di Analisi 2
 #readme = data[data["FileName"].str.contains("_readme_.txt")]
