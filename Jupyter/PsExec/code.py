@@ -1,9 +1,9 @@
-importa panda come pd 
-importa json 
-importa re 
+import pandas as pd
+import json
+import re
 
-#Lettura file json
-eventlog_df = pd.read_json ( 'cmd_psexec_lsa_secrets_dump_2020-10-1903305471.json' , righe = True )
+#Lettura file Json
+eventlog_df = pd.read_json('cmd_psexec_lsa_secrets_dump_2020-10-1903305471.json', lines=True)
 
 #Visualizzare anteprima dataframe
 eventlog_df.head()
